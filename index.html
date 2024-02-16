@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Alumnos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Agregamos un poco de espacio en la parte inferior de la lista de materias */
+        .materias {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Lista de Alumnos</h1>
+
+        <!-- Agregamos los tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#tab1" onclick="openTab('tab1')">Lista de Alumnos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tab2" onclick="openTab('tab2')">Computación</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tab3" onclick="openTab('tab3')">Español</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tab4" onclick="openTab('tab4')">Inglés</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tab5" onclick="openTab('tab5'); cargarInformacionCompletaAlumnos();">Información Completa</a>
+            </li>
+        </ul>
+
+        <!-- Contenido de los tabs -->
+        <div id="tab1" class="tab-content active">
+            <!-- Contenido del tab 1 -->
+            <div class="card mb-4 alumno-card" onclick="mostrarInformacionAlumno(this)">
+                <div class="card-body">
+                    <!-- Contenido de la tarjeta de alumno -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" class="form-control mb-2" placeholder="Nombre del alumno">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control mb-2" placeholder="Apellido del alumno">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control mb-2" placeholder="Número de cuenta">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control mb-2" placeholder="Edad">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control mb-2" placeholder="Calificación">
+                        </div>
+                    </div>
+                    <p>Inscripciones</p>
+                    <button class="btn btn-primary float-right" onclick="agregarAlumno()">Agregar Alumno</button>
+                    <button class="btn btn-success float-right mr-2" onclick="inscribirAlumno()"> Alumnos en Español</button>
+                    <button class="btn btn-success float-right mr-2" onclick="inscribirAlumnosComputacion()"> Alumnos en Computación</button>
+                    <button class="btn btn-success float-right mr-2" onclick="inscribirAlumnosIngles()"> Alumnos en Inglés</button>
+                    <button class="btn btn-success float-right mr-2" onclick="inscribirAlumnosIngles()"> Alumnos en Matemáticas</button>
+                </div>
+            </div>
+            <div class="row" id="lista-alumnos">
+                <!-- Aquí se mostrarán los alumnos -->
+            </div>
+        </div>
+
+        <div id="tab2" class="tab-content">
+            <!-- Contenido del tab 2 -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Alumnos Inscritos en Computación</h5>
+                    <div class="input-group mb-3">
+                        <input type="text" id="buscar-alumno-computacion" class="form-control" placeholder="Buscar por nombre o número de cuenta">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="buscarAlumnoComputacion()">Buscar</button>
+                        </div>
+                    </div>
+                    <div id="resultado-busqueda-computacion"></div>
+                    <button class="btn btn-primary" id="btnOrdenarNombreComputacion" onclick="ordenarPorNombreComputacion()">Ordenar por Nombre</button>
+                    <button class="btn btn-primary" id="btnOrdenarEdadComputacion" onclick="ordenarPorEdadComputacion()">Ordenar por Edad</button>
+                    <div id="lista-computacion"></div> <!-- Aquí se mostrarán los alumnos inscritos en computación -->
+                </div>
+            </div>
+        </div>
+
+        <div id="tab3" class="tab-content">
+            <!-- Contenido del tab 3 -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Alumnos Inscritos en Español</h5>
+                    <div class="input-group mb-3">
+                        <input type="text" id="buscar-alumno" class="form-control" placeholder="Buscar por nombre o número de cuenta">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="buscarAlumno()">Buscar</button>
+                        </div>
+                    </div>
+                    <div id="resultado-busqueda"></div>
+                    <button class="btn btn-primary" id="btnOrdenarNombreEspanol" onclick="ordenarPorNombreEspanol()">Ordenar por Nombre</button>
+                    <button class="btn btn-primary" id="btnOrdenarEdadEspanol" onclick="ordenarPorEdadEspanol()">Ordenar por Edad</button>
+                    <div id="lista-espanol"></div> <!-- Aquí se mostrarán los alumnos inscritos -->
+                </div>
+            </div>
+        </div>
+
+        <div id="tab4" class="tab-content">
+            <!-- Contenido del tab 4 -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Alumnos Inscritos en Inglés</h5>
+                    <div class="input-group mb-3">
+                        <input type="text" id="buscar-alumno-ingles" class="form-control" placeholder="Buscar por nombre o número de cuenta">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="buscarAlumnoIngles()">Buscar</button>
+                        </div>
+                    </div>
+                    <div id="resultado-busqueda-ingles"></div>
+                    <button class="btn btn-primary" id="btnOrdenarNombreIngles" onclick="ordenarPorNombreIngles()">Ordenar por Nombre</button>
+                    <button class="btn btn-primary" id="btnOrdenarEdadIngles" onclick="ordenarPorEdadIngles()">Ordenar por Edad</button>
+                    <div id="lista-ingles"></div> <!-- Aquí se mostrarán los alumnos inscritos en inglés -->
+                </div>
+            </div>
+        </div>
+        <div id="tab5" class="tab-content">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Información Completa de Alumnos</h5>
+                    <div id="informacion-completa-alumnos"></div> <!-- Aquí se mostrará la información completa de los alumnos -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ventana modal -->
+    <div class="modal fade" id="modalError">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>No se encuentra el alumno.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y jQuery (requeridos para que funcione Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Tu archivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
